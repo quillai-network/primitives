@@ -1,4 +1,4 @@
-import type { PrimitiveCore } from "@quillai/mandates-core";
+import type { PrimitiveCore } from "@quillai-network/mandates-core";
 
 export interface PrimitiveDescriptor<T extends PrimitiveCore = PrimitiveCore> {
   /** e.g. "swap@1" */

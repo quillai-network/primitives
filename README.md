@@ -1,58 +1,68 @@
-# @quillai/primitives-registry
-
-**Day-1 builders** for Mandate primitives.  
-No runtime validation yet — just ergonomic helpers to construct `{ kind, payload }` cores.
-
-### Install
-```bash
-npm i @quillai/primitives-registry
-Usage
-ts
-Copy code
-import { swapV1 } from "@quillai/primitives-registry";
-const core = swapV1.core({
-  chainId: 1,
-  tokenIn: "...",
-  tokenOut: "...",
-  amountIn: "100000000",
-  minOut: "165000",
-  recipient: "0x...",
-  deadline: "2025-10-23T10:20:00Z"
-});
-```
-
-Validation and a pluggable registry can be added in a future minor version.
+# Primitives
 
 
-## How they work together (example)
+The repository defines reusable task templates (called *Primitives*) for building Mandates in the [ERC-8004 agent ecosystem](https://eips.ethereum.org/EIPS/eip-8004).
+Each Primitive represents a structured task body (`core`) that can be embedded inside a Mandate.
+
+---
+
+## Purpose
+
+* Provide common, shareable payload definitions for agent-to-agent tasks
+* Keep Mandates lightweight while standardizing common types like `swap@1` or `bridge@1`
+* Enable developers to create and extend primitives with minimal boilerplate
+
+---
+
+## Example Usage
 
 ```ts
+import { swapV1 } from "@quillai/primitives";
 import { Mandate } from "@quillai/mandates-core";
-import { swapV1 } from "@quillai/primitives-registry";
-import { Wallet } from "ethers";
 
-const client = Wallet.createRandom();
-const server = Wallet.createRandom();
-
-const m = new Mandate({
-  version: "0.1.0",
-  client: `eip155:1:${client.address}`,
-  server: `eip155:1:${server.address}`,
-  deadline: new Date(Date.now() + 600000).toISOString(),
-  intent: "Swap 100 USDC for WBTC on Ethereum",
-  core: swapV1.core({
-    chainId: 1,
-    tokenIn: "0xA0b8...eB48",
-    tokenOut: "0x2260...C599",
-    amountIn: "100000000",
-    minOut: "165000",
-    recipient: "0x0000000000000000000000000000000000000001",
-    deadline: "2025-10-23T10:20:00Z"
-  }),
-  signatures: {}
+const primitive = swapV1.core({
+  chainId: 1,
+  tokenIn: "0xA0b8...6eB48",
+  tokenOut: "0x2260...C599",
+  amountIn: "100000000",
+  minOut: "165000",
+  recipient: "0x0000000000000000000000000000000000000001",
+  deadline: "2025-12-31T00:00:00Z"
 });
 
-await m.signAsServer(server, "eip191");
-await m.signAsClient(client, "eip191");
-console.log(m.verifyAll());
+const mandate = new Mandate({
+  client: "eip155:1:0xCLIENT...",
+  server: "eip155:1:0xSERVER...",
+  intent: "Swap 100 USDC for WBTC on mainnet",
+  core: primitive
+});
 ```
+
+---
+
+## Structure
+
+```
+primitives-registry/
+├─ src/
+│  ├─ primitives/
+│  │  └─ swap/
+│  │     └─ swap@1.ts
+│  ├─ index.ts
+│  └─ types.ts
+├─ tests/
+│  └─ swap.test.ts
+├─ README.md
+├─ LICENSE
+└─ package.json
+```
+
+---
+
+## License
+
+Released under the **MIT License**.
+
+---
+
+Would you like me to extend this README with a short “Contributing” section (similar to your other repo) to make it consistent across both?
