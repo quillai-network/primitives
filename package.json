@@ -1,0 +1,50 @@
+{
+  "name": "@quillai-network/primitives",
+  "version": "0.1.0",
+  "description": "Builders for Mandate primitives. No runtime validation yet — just ergonomic helpers to construct { kind, payload } cores.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/quillai-network/primitives.git"
+  },
+  "bugs": { "url": "https://github.com/quillai-network/primitives/issues" },
+  "homepage": "https://github.com/quillai-network/primitives#readme",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "dev": "vitest watch",
+    "clean": "rimraf dist",
+    "prepublishOnly": "npm run clean && npm run build && npm run test"
+  },
+  "keywords": ["erc-8004","mandates","agents","web3","sdk","typescript"],
+  "author": "QuillAINetwork",
+  "contributors": [
+    {
+      "name": "Akshat Mishra",
+      "url": "https://github.com/Akshat-Mishra101"
+    },
+    {
+      "name": "Akshay Dev H",
+      "url": "https://github.com/akshaydevh"
+    }
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@quillai-network/mandates-core": "^0.1.0",
+    "vitest": "^4.0.8"
+  },
+  "devDependencies": {
+    "rimraf": "^6.1.0",
+    "tsc": "^2.0.4"
+  }
+}
