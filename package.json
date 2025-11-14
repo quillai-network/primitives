@@ -1,6 +1,6 @@
 {
   "name": "@quillai-network/primitives",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Builders for Mandate primitives. No runtime validation yet — just ergonomic helpers to construct { kind, payload } cores.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
