@@ -7,7 +7,6 @@ export interface SwapV1Payload {
   amountIn: string;  // wei (string)
   minOut: string;    // wei (string)
   recipient: string; // EVM address
-  deadline: string;  // ISO 8601
 }
 
 export type SwapV1Core = PrimitiveCore<"swap@1", SwapV1Payload>;

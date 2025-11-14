@@ -1,55 +1,90 @@
-# Primitives
+# @quillai-network/primitives
 
+A lightweight registry of reusable task templates (called **Primitives**) for constructing `core` payloads inside Mandates.
+These Primitives define the structured task body that agents use in the ERC-8004 agent ecosystem.
 
-The repository defines reusable task templates (called *Primitives*) for building Mandates in the [ERC-8004 agent ecosystem](https://eips.ethereum.org/EIPS/eip-8004).
-Each Primitive represents a structured task body (`core`) that can be embedded inside a Mandate.
+Each Primitive provides:
+
+* A unique `kind` identifier
+* A well-defined `payload` schema
+* A helper function to build valid `core` objects
+
+This package is designed to work seamlessly with the [`@quillai-network/mandates-core`](https://www.npmjs.com/package/@quillai-network/mandates-core) SDK.
 
 ---
 
 ## Purpose
 
-* Provide common, shareable payload definitions for agent-to-agent tasks
-* Keep Mandates lightweight while standardizing common types like `swap@1` or `bridge@1`
-* Enable developers to create and extend primitives with minimal boilerplate
+Primitives enable developers to:
+
+* Use standardized, shareable structures for common agent tasks
+* Keep Mandate creation simple while preserving strict structure for verification
+* Build new primitives with minimal boilerplate
+* Ensure agents speak a consistent “task language” (e.g., `swap@1`, `bridge@1`)
 
 ---
 
-## Example Usage
+## Installation
+
+```bash
+npm install @quillai-network/primitives
+```
+
+---
+
+## Quickstart
+
+Below is a minimal example showing how to generate a `swap@1` core payload and embed it into a Mandate:
 
 ```ts
-import { swapV1 } from "@quillai/primitives";
-import { Mandate } from "@quillai/mandates-core";
+import { swapV1 } from "@quillai-network/primitives";
+import { Mandate } from "@quillai-network/mandates-core";
 
-const primitive = swapV1.core({
+// Build a primitive core payload
+const core = swapV1.core({
   chainId: 1,
   tokenIn: "0xA0b8...6eB48",
-  tokenOut: "0x2260...C599",
-  amountIn: "100000000",
+  tokenOut: "0x2260...c599",
+  amountIn: "100000000",   // 100 USDC (6 decimals)
   minOut: "165000",
-  recipient: "0x0000000000000000000000000000000000000001",
+  recipient: "0xeip155:1:0xRecipient...",
   deadline: "2025-12-31T00:00:00Z"
 });
 
+// Build a Mandate using the primitive core payload
 const mandate = new Mandate({
-  client: "eip155:1:0xCLIENT...",
-  server: "eip155:1:0xSERVER...",
-  intent: "Swap 100 USDC for WBTC on mainnet",
-  core: primitive
+  version: "0.1.0",
+  client: "eip155:1:0xClient...",
+  server: "eip155:1:0xServer...",
+  intent: "Swap 100 USDC for WBTC",
+  deadline: new Date(Date.now() + 600000).toISOString(),
+  core,
+  signatures: {}
 });
 ```
 
 ---
 
-## Structure
+## Available Primitives
+
+Currently supported:
+
+* **`swap@1`** — A minimal, chain-agnostic token swap primitive
+
+More primitives will be added over time as the ERC-8004 agent ecosystem evolves.
+
+---
+
+## Project Structure
 
 ```
-primitives-registry/
+primitives/
 ├─ src/
 │  ├─ primitives/
-│  │  └─ swap/
-│  │     └─ swap@1.ts
+│  │  ├─ swap/
+│  │  │  └─ swap@1.ts
 │  ├─ index.ts
-│  └─ types.ts
+│  ├─ types.ts
 ├─ tests/
 │  └─ swap.test.ts
 ├─ README.md
@@ -61,8 +96,4 @@ primitives-registry/
 
 ## License
 
-Released under the **MIT License**.
-
----
-
-Would you like me to extend this README with a short “Contributing” section (similar to your other repo) to make it consistent across both?
+Released under the MIT License.
