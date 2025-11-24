@@ -1,5 +1,8 @@
 # @quillai-network/primitives
 
+[![npm version](https://badge.fury.io/js/@quillai-network%2Fprimitives.svg)](https://badge.fury.io/js/@quillai-network%2Fprimitives)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A lightweight registry of reusable task templates (called **Primitives**) for constructing `core` payloads inside Mandates.
 These Primitives define the structured task body that agents use in the ERC-8004 agent ecosystem.
 
